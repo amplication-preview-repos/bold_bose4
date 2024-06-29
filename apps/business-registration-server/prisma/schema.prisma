@@ -1,0 +1,39 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model LegalDocument {
+  business   Business? @relation(fields: [businessId], references: [id])
+  businessId String?
+  createdAt  DateTime  @default(now())
+  filename   String?
+  fileUrl    String?
+  id         String    @id @default(cuid())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Employee {
+  business   Business? @relation(fields: [businessId], references: [id])
+  businessId String?
+  createdAt  DateTime  @default(now())
+  id         String    @id @default(cuid())
+  name       String?
+  position   String?
+  updatedAt  DateTime  @updatedAt
+}
+
+model Business {
+  address        String?
+  contactNumber  String?
+  createdAt      DateTime        @default(now())
+  employees      Employee[]
+  id             String          @id @default(cuid())
+  legalDocuments LegalDocument[]
+  name           String?
+  updatedAt      DateTime        @updatedAt
+}
